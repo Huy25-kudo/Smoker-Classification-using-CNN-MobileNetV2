@@ -1,0 +1,48 @@
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# === Virtual Environment ===
+.venv/
+venv/
+env/
+
+# === Dataset & Data (quá nặng, không push lên GitHub) ===
+data/
+dataset/
+dataset_split/
+processed_dataset/
+
+# === Model weights & checkpoints ===
+*.h5
+*.keras
+*.pb
+*.onnx
+*.tflite
+saved_model/
+
+# === Logs & TensorBoard ===
+logs/
+train_log.txt
+
+# === Debug / Temp files (không cần thiết) ===
+pypaths.txt
+pippaths.txt
+true_pip_paths.txt
+true_python_paths.txt
+test_image.py
+test_gradcam.py
+src/Untitled-1.txt
+src/notebook_errors.txt
+src/update_notebook.py
+src/update_paths_to_absolute.py
+
+# === OS & IDE ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
