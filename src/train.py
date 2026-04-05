@@ -19,7 +19,7 @@ BATCH_SIZE = 32
 IMG_SIZE = (224, 224)
 EPOCHS = 100 
 LEARNING_RATE = 1e-5 # Cực thấp cho fine-tuning để tránh làm hỏng weights imagenet 
-MODEL_SAVE_PATH = os.path.join("logs", "mobilenetv2_smoker.keras")
+MODEL_SAVE_PATH = os.path.join("logs", "mobilenetv2_smoker.h5")
 
 def train_model():
     # 1. Loading data & Preparing DataFrame
@@ -150,6 +150,8 @@ def train_model():
         ]
     )
 
+    print(f"[INFO] Bat dau luu model full vao {MODEL_SAVE_PATH}...")
+    model.save(MODEL_SAVE_PATH)
     print(f"[DONE] Huan luyen hoan tat! Model luu tai: {MODEL_SAVE_PATH}")
     return history
 
