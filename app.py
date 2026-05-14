@@ -2,233 +2,179 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 from PIL import Image
 import os
 
-from src.model import create_model
+# ==========================================
+# 1. CẤU HÌNH GIAO DIỆN STREAMLIT
+# ==========================================
+st.set_page_config(page_title="Smoker Detection & Explainability", page_icon="🚬", layout="wide")
 
-# --- THIẾT LẬP TRANG ---
-st.set_page_config(
-    page_title="AI Smoking Detection Pro",
-    page_icon="🚭",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# --- CUSTOM CSS ---
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; color: #ffffff; }
-    .stButton>button {
-        width: 100%; border-radius: 12px; height: 3em;
-        background: linear-gradient(45deg, #ff4b4b, #ff7e5f);
-        color: white; border: none; font-weight: bold; transition: 0.3s;
+    .main { background-color: #f8f9fa; }
+    .stApp { max-width: 1200px; margin: 0 auto; }
+    .prediction-box {
+        padding: 30px; border-radius: 15px; text-align: center;
+        margin-top: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
     }
-    .stButton>button:hover {
-        transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255, 75, 75, 0.4);
-    }
-    .result-card {
-        padding: 1.5rem; border-radius: 15px; border-left: 5px solid #ff4b4b;
-        background: #1a1c24; margin-bottom: 2rem;
-    }
-    .metric-container {
-        display: flex; justify-content: space-around; padding: 1rem;
-        background: #262730; border-radius: 10px;
-    }
-    .stat-box { text-align: center; }
-    .stat-val { font-size: 2rem; font-weight: bold; color: #ff4b4b; }
-    .stat-label { font-size: 0.8rem; color: #a1a1a1; }
+    .prediction-box:hover { transform: translateY(-5px); }
+    .smoking { background-color: #ffebee; border: 2px solid #ef5350; color: #c62828; }
+    .not-smoking { background-color: #e8f5e9; border: 2px solid #66bb6a; color: #2e7d32; }
+    .title-text { text-align: center; background: -webkit-linear-gradient(#3498db, #2c3e50); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; margin-bottom: 0.5rem; }
+    .subtitle-text { text-align: center; color: #7f8c8d; font-size: 1.2rem; margin-bottom: 2rem; }
     </style>
 """, unsafe_allow_html=True)
 
-# ============================================================
-# TÍNH TOÁN GRAD-CAM (Gradient-weighted Class Activation Mapping)
-# ============================================================
-def get_gradcam_heatmap(img_array, model, last_conv_layer_name="out_relu"):
-    """
-    Hàm tính toán bản đồ nhiệt Grad-CAM cho mô hình mạng CNN (MobileNetV2).
-    Nhận đầu vào là ảnh đã tiền xử lý, mô hình, và tên lớp Convolution cuối cùng.
-    """
+# ==========================================
+# 2. TẢI MÔ HÌNH VÀ XỬ LÝ GRAD-CAM
+# ==========================================
+@st.cache_resource
+def load_model():
+    model_path = "models/smoker_detector_final.keras"
+    if not os.path.exists(model_path):
+        model_path = "models/smoker_detector_best.keras"
+        
+    if not os.path.exists(model_path):
+        st.error(f"❌ Không tìm thấy mô hình tại {model_path}")
+        return None
+        
     try:
-        # 1. Tìm base_model (MobileNetV2) linh hoạt (tránh lỗi do cấu trúc .name bị đổi thành mobilenetv2_1.00_224)
-        base_model = None
-        for layer in model.layers:
-            if "mobilenet" in layer.name.lower():
-                base_model = layer
-                break
-                
-        if base_model is None:
-            raise ValueError("Không tìm thấy layer chứa trúc MobileNetV2.")
-            
-        last_conv_layer = base_model.get_layer(last_conv_layer_name)
-        
-        # 2. Tạo mô hình trích xuất trung gian (Gradient Model)
-        # Bắt buộc để vừa lấy Feature Map vừa lấy được dữ liệu truyền tiếp lên các lớp phân loại.
-        base_grad_model = tf.keras.Model(
-            base_model.input, 
-            [last_conv_layer.output, base_model.output]
+        model = tf.keras.models.load_model(
+            model_path, 
+            compile=False,
+            safe_mode=False
         )
-        
-        # 3. Mở GradientTape để theo dõi đạo hàm
-        with tf.GradientTape() as tape:
-            x = img_array
-            
-            # Cắt qua ảnh gốc vào Data Augmentation nếu có (luôn set training=False)
-            if "data_augmentation" in [layer.name for layer in model.layers]:
-                aug_layer = model.get_layer("data_augmentation")
-                x = aug_layer(x, training=False)
-            
-            # Giải nén [Bản đồ đặc trưng, Dữ liệu vector max pooling]
-            conv_outputs, pooled_features = base_grad_model(x, training=False)
-            
-            # Đánh dấu theo dõi đạo hàm cho Tensor Feature map (conv_outputs)
-            tape.watch(conv_outputs)
-            
-            # 4. Tiếp tục tính Gradient Forward Pass bằng cách cấp Vector Pool chạy nốt vòng lặp mạng Dense Classifier
-            x = pooled_features
-            for layer_name in ["dense_1", "dropout_1", "dense_2", "dropout_2", "predictions"]:
-                x = model.get_layer(layer_name)(x, training=False)
-            predictions = x
-            
-            # Lấy vector điểm ra class đang thắng (có score cao nhất)
-            top_pred_index = tf.argmax(predictions[0])
-            top_class_channel = predictions[:, top_pred_index]
+        return model
+    except Exception as e: 
+        st.error(f"❌ Lỗi khi tải mô hình: {e}")
+        return None 
 
-        # 5. Lấy đạo hàm (Gradients) ngược của lớp kết quả đối với các kênh hình ảnh của feature map convolution
-        grads = tape.gradient(top_class_channel, conv_outputs)
-        if grads is None:
-            return None
+def make_gradcam_heatmap(img_array, model, branch='deep'):
+    try:
+        # Lấy đúng layer Pooling của nhánh được chỉ định (mặc định là deep)
+        pool_layer_name = 'pool_smoke' if branch == 'deep' else 'pool_cigarette'
+        pool_layer = model.get_layer(pool_layer_name)
+        
+        # Truy ngược lại lớp Multiply/Conv2D ngay trước lớp Pooling
+        target_layer_name = pool_layer.input.name.split('/')[0].split(':')[0]
+        target_layer = model.get_layer(target_layer_name)
+
+        grad_model = tf.keras.models.Model(
+            inputs=model.inputs, 
+            outputs=[target_layer.output, model.output]
+        )
+
+        with tf.GradientTape() as tape:
+            conv_outputs, predictions = grad_model(img_array, training=False)
+            if isinstance(predictions, list): predictions = predictions[-1]
             
-        # Tính trọng đạo hàm trung bình toàn cầu
+            class_channel = predictions[:, 1]
+
+        grads = tape.gradient(class_channel, conv_outputs)
+        
+        if isinstance(conv_outputs, list):
+            conv_outputs = conv_outputs[0]
+            grads = grads[0]
+
         pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+        heatmap = conv_outputs[0] @ pooled_grads[..., tf.newaxis]
+        heatmap = tf.squeeze(heatmap)
         
-        # 6. Nhân ma trận - áp từng lớp trọng lượng gradient dồn vào kênh kích hoạt mảng features map tương ứng 
-        conv_outputs = conv_outputs[0]
-        heatmap = conv_outputs @ pooled_grads[..., tf.newaxis]
-        heatmap = tf.squeeze(heatmap) 
-        
-        # Hàm kẹp - chuyển âm xuống 0 và đưa về phân phối max pool (0.0 đến 1.0)
-        heatmap = tf.maximum(heatmap, 0) / (tf.math.reduce_max(heatmap) + 1e-10)
-        
+        heatmap = tf.maximum(heatmap, 0)
+        max_val = tf.math.reduce_max(heatmap)
+        if max_val > 0: 
+            heatmap = heatmap / max_val
+            
         return heatmap.numpy()
-        
     except Exception as e:
-        print(f"[GRAD-CAM LỖI] {str(e)}")
+        print(f"Lỗi Grad-CAM: {e}")
         return None
 
-def apply_thermal_overlay(img_bgr, heatmap):
-    """
-    Biến đổi Heatmap Array (0-1) thành bản đồ nhiệt có màu và phủ lên ảnh gốc.
-    """
-    # Thay đổi kích thước heatmap cho khớp với ảnh gốc (cv2 resize theo Width, Height)
-    heatmap = cv2.resize(heatmap, (img_bgr.shape[1], img_bgr.shape[0]))
-    
-    # Chuyển đổi sang định dạng 8-bit (0-255)
-    heatmap = np.uint8(255 * heatmap)
-    
-    # Phủ màu nhiệt JET (đỏ là vùng nhận diện mạnh, xanh là ít)
-    heatmap_color = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
-    heatmap_color = cv2.GaussianBlur(heatmap_color, (7, 7), 0)
-    
-    # Kết hợp ảnh gốc và bản đồ nhiệt với tỉ lệ 60/40 (alpha=0.6, beta=0.4)
-    overlay = cv2.addWeighted(img_bgr, 0.6, heatmap_color, 0.4, 0)
-    
-    # Vẽ Contour tô viền đậm cho những vùng "rất mạnh" (giá trị điểm nhiệt > 150)
-    _, thresh = cv2.threshold(heatmap, 150, 255, cv2.THRESH_BINARY)
-    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(overlay, contours, -1, (255, 255, 255), 2)
-    
-    return overlay
+def get_superimposed_img(img_array_rgb, heatmap, alpha=0.4):
+    try:
+        img_bgr = cv2.cvtColor(img_array_rgb, cv2.COLOR_RGB2BGR)
+        heatmap_resized = cv2.resize(heatmap, (224, 224))
+        heatmap_colored = np.uint8(255 * heatmap_resized)
+        heatmap_colored = cv2.applyColorMap(heatmap_colored, cv2.COLORMAP_JET)
+        superimposed_img = cv2.addWeighted(img_bgr, 1 - alpha, heatmap_colored, alpha, 0)
+        return cv2.cvtColor(superimposed_img, cv2.COLOR_BGR2RGB)
+    except:
+        return img_array_rgb
 
-# --- GIAO DIỆN CHÍNH ---
+# ==========================================
+# 3. HÀM MAIN - XỬ LÝ LUỒNG GIAO DIỆN
+# ==========================================
 def main():
-    st.markdown("<h1 style='text-align: center; color: #ff4b4b;'>🚭 AI SMOKING DETECTION</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;'>Hệ thống nhận diện hành vi hút thuốc chuẩn CNN + MobileNetV2</p>", unsafe_allow_html=True)
-    
-    # Sidebar
-    st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2855/2855519.png", width=100)
-    st.sidebar.title("⚙️ Cấu hình AI")
-    
-    confidence_threshold = st.sidebar.slider(
-        "🎚️ Độ nhạy (Confidence Threshold)", 
-        min_value=0.1, max_value=0.99, value=0.5, step=0.05,
-        help="Thay đổi ngưỡng dự đoán Hút thuốc (VD: 0.5 là chuẩn)."
-    )
-    
-    # Check model path
-    weights_path = os.path.join("logs", "smokers_classification_model_checkpoint.weights.h5")
-    if not os.path.exists(weights_path):
-        st.error(f"❌ Không tìm thấy trọng số mô hình tại {weights_path}. Vui lòng huấn luyện mô hình (chạy train.py) trước!")
-        return
+    st.markdown("<h1 class='title-text'>🚬 Trợ Lý AI: Phát Hiện Người Hút Thuốc</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='subtitle-text'>Phân tích Toàn cảnh tích hợp Cơ chế Chú ý Kép (CBAM)</p>", unsafe_allow_html=True)
 
-    @st.cache_resource
-    def load_ai_model():
-        model = create_model(input_shape=(224, 224, 3))
-        # Load trọng số vào mô hình
-        model.load_weights(weights_path)
-        return model
+    with st.spinner("Đang tải mô hình AI..."):
+        model = load_model()
 
-    model = load_ai_model()
+    if model is not None:
+        uploaded_file = st.file_uploader("📂 Kéo thả hoặc chọn ảnh từ thiết bị của bạn...", type=["jpg", "jpeg", "png"])
 
-    tab1, tab3 = st.tabs(["🖼️ Nhận diện Ảnh tĩnh", "ℹ️ Giới thiệu Grad-CAM"])
-
-    with tab1:
-        uploaded_file = st.file_uploader("Tải lên ảnh cần phân tích...", type=["jpg", "jpeg", "png"])
-        
-        if uploaded_file:
-            col1, col2 = st.columns(2)
+        if uploaded_file is not None:
+            # Thu gọn lại thành 3 cột chuẩn mực
+            col1, col2, col3 = st.columns([1, 1, 1], gap="large")
             
-            # Read Image
-            img = Image.open(uploaded_file).convert('RGB')
-            img_resized = img.resize((224, 224))
-            img_array = tf.keras.preprocessing.image.img_to_array(img_resized)
-            
-            # Preprocessing ĐÚNG chuẩn MobileNetV2 để tránh dự đoán sai
-            img_array_preprocessed = tf.keras.applications.mobilenet_v2.preprocess_input(img_array.copy())
-            img_array_batch = tf.expand_dims(img_array_preprocessed, 0)
-            
-            with col1:
-                # Dùng use_container_width vì use_column_width đã bị deprecate
-                st.image(img, caption="Ảnh gốc đã tải lên", use_container_width=True)
+            try:
+                # 1. ĐỌC VÀ CHUẨN BỊ ẢNH
+                image_pil = Image.open(uploaded_file).convert("RGB")
+                img_array_original = np.array(image_pil)
+                img_resized = cv2.resize(img_array_original, (224, 224))
                 
-            if st.button("🚀 PHÂN TÍCH VỚI AI + GRAD-CAM"):
-                with st.spinner("Đang chạy thuật toán..."):
-                    # Dự đoán bằng mô hình đã xử lý MobileNetV2 preprocessing
-                    preds = model.predict(img_array_batch, verbose=0)
-                    prob_smoking = float(preds[0][1])  # Index 1 là 'smoking'
-                    prob_not_smoking = float(preds[0][0])
-                    
-                    label = "ĐANG HÚT THUỐC" if prob_smoking >= confidence_threshold else "KHÔNG HÚT THUỐC"
-                    color = "#ff4b4b" if label == "ĐANG HÚT THUỐC" else "#28a745"
-                    
-                    heatmap = get_gradcam_heatmap(img_array_batch, model)
-                    
-                    with col2:
-                        st.markdown(f"""
-                            <div class="result-card" style="border-left-color: {color};">
-                                <h2 style="color: {color}; margin-top:0;">{label}</h2>
-                                <hr style="border: 0.5px solid #444;">
-                                <div class="metric-container">
-                                    <div class="stat-box">
-                                        <div class="stat-val">{prob_smoking*100:.1f}%</div>
-                                        <div class="stat-label">Xác suất Hút thuốc</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-val">{prob_not_smoking*100:.1f}%</div>
-                                        <div class="stat-label">Không hút</div>
-                                    </div>
-                                </div>
-                            </div>
-                        """, unsafe_allow_html=True)
+                # Batch input (Chỉ truyền mảng 0-255 vì model đã có lớp Lambda)
+                img_batch = img_resized.astype(np.float32)
+                img_batch = np.expand_dims(img_batch, axis=0)
+                
+                with col1:
+                    st.markdown("<h3 style='text-align: center;'>Ảnh đầu vào</h3>", unsafe_allow_html=True)
+                    st.image(img_resized, use_container_width=True)
+                
+                # 2. DỰ ĐOÁN
+                with col2:
+                    st.markdown("<h3 style='text-align: center;'>Dự đoán</h3>", unsafe_allow_html=True)
+                    with st.spinner('Đang phân tích...'):
+                        preds = model.predict(img_batch, verbose=0)
+                        if isinstance(preds, list): preds = preds[-1]
                         
-                        if heatmap is not None:
-                            img_bgr = cv2.cvtColor(np.array(img_resized), cv2.COLOR_RGB2BGR)
-                            overlay = apply_thermal_overlay(img_bgr, heatmap)
-                            st.image(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB), caption="Bản đồ nhiệt Grad-CAM", use_container_width=True)
+                        p_not_smoking = float(preds[0][0])
+                        p_smoking = float(preds[0][1])
+                        
+                        is_smoking_final = (p_smoking > p_not_smoking)
+                        confidence = p_smoking * 100 if is_smoking_final else p_not_smoking * 100
+                        
+                        if is_smoking_final:
+                            st.markdown(f"""
+                            <div class="prediction-box smoking">
+                                <h2 style="margin: 0; font-size: 2rem;">SMOKING</h2>
+                                <p style="margin-top: 10px; font-size: 1.2rem; opacity: 0.9;">Độ tự tin: <b>{confidence:.2f}%</b></p>
+                            </div>
+                            """, unsafe_allow_html=True)
                         else:
-                            st.info("Không thể tạo Grad-CAM cho mô hình này.")
-
+                            st.markdown(f"""
+                            <div class="prediction-box not-smoking">
+                                <h2 style="margin: 0; font-size: 2rem;">NOT SMOKING</h2>
+                                <p style="margin-top: 10px; font-size: 1.2rem; opacity: 0.9;">Độ tự tin: <b>{confidence:.2f}%</b></p>
+                            </div>
+                            """, unsafe_allow_html=True)
+                            
+                # 3. XỬ LÝ GRAD-CAM DUY NHẤT (MẶC ĐỊNH LÀ NHÁNH DEEP GIỐNG NOTEBOOK 3)
+                with col3:
+                    st.markdown("<h3 style='text-align: center;'>🔍 AI Focus (Grad-CAM)</h3>", unsafe_allow_html=True)
+                    with st.spinner('Vẽ biểu đồ...'):
+                        heatmap = make_gradcam_heatmap(img_batch, model, branch='deep')
+                        if heatmap is not None:
+                            gradcam_img = get_superimposed_img(img_resized, heatmap)
+                            st.image(gradcam_img, use_container_width=True, caption="Vùng AI tập trung để ra quyết định")
+                        else:
+                            st.info("Không thể tạo biểu đồ nhiệt cho ảnh này.")
+                            
+            except Exception as e:
+                st.error(f"Đã xảy ra lỗi hệ thống khi xử lý ảnh: {str(e)}")
 
 if __name__ == "__main__":
     main()

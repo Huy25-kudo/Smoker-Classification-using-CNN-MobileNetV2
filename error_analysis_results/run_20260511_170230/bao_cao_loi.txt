@@ -1,0 +1,785 @@
+======================================================================
+  BÁO CÁO PHÂN TÍCH LỖI NHẬN DIỆN - SMOKER DETECTION
+  Thời gian: 2026-05-11 17:02:31
+======================================================================
+
+Tổng mẫu test: 462
+Accuracy: 83.77%
+Tổng lỗi: 75 (16.2%)
+  - False Positive (FP): 31
+  - False Negative (FN): 44
+
+======================================================================
+THỐNG KÊ THEO NGUYÊN NHÂN CHÍNH
+======================================================================
+
+[conf_tb_sai] Confidence trung bình sai
+  Tổng: 28 (FP=13, FN=15)
+  Confidence TB: 71.4%
+
+[conf_cao_sai] Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tổng: 28 (FP=10, FN=18)
+  Confidence TB: 91.1%
+
+[anh_qua_toi] Ảnh quá tối - khó nhận diện
+  Tổng: 16 (FP=7, FN=9)
+  Confidence TB: 70.2%
+
+[truong_hop_bien] Trường hợp biên - confidence sát ngưỡng
+  Tổng: 3 (FP=1, FN=2)
+  Confidence TB: 55.7%
+
+======================================================================
+THỐNG KÊ THEO MỨC ĐỘ NGHIÊM TRỌNG
+======================================================================
+
+  NGHIEM_TRONG: 33 (44.0%)
+  TRUNG_BINH: 35 (46.7%)
+  NHE: 7 (9.3%)
+
+======================================================================
+CHI TIẾT TỪNG TRƯỜNG HỢP SAI (sắp xếp theo confidence giảm dần)
+======================================================================
+
+[1] NGHIEM_TRONG - FN
+  File: bb0443.jpg
+  True: smoking | Pred: not_smoking (99.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=99.3% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[2] NGHIEM_TRONG - FN
+  File: ggg147.jpg
+  True: smoking | Pred: not_smoking (99.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=99.3% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[3] NGHIEM_TRONG - FN
+  File: c00067.jpg
+  True: smoking | Pred: not_smoking (99.0%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=99.0% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[4] NGHIEM_TRONG - FN
+  File: 000744.jpg
+  True: smoking | Pred: not_smoking (98.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=98.7% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[5] NGHIEM_TRONG - FN
+  File: c00113.jpg
+  True: smoking | Pred: not_smoking (97.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.9% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[6] NGHIEM_TRONG - FP
+  File: ggg505.jpg
+  True: not_smoking | Pred: smoking (97.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.7% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[7] NGHIEM_TRONG - FN
+  File: gg0185.jpg
+  True: smoking | Pred: not_smoking (97.5%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.5% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[8] NGHIEM_TRONG - FN
+  File: bb0543.jpg
+  True: smoking | Pred: not_smoking (97.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.4% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[9] NGHIEM_TRONG - FN
+  File: gg0077.jpg
+  True: smoking | Pred: not_smoking (97.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.4% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[10] NGHIEM_TRONG - FN
+  File: 000387.jpg
+  True: smoking | Pred: not_smoking (97.0%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=97.0% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[11] NGHIEM_TRONG - FN
+  File: gg0089.jpg
+  True: smoking | Pred: not_smoking (96.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=96.9% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[12] NGHIEM_TRONG - FP
+  File: ggg517.jpg
+  True: not_smoking | Pred: smoking (96.8%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=96.8% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[13] NGHIEM_TRONG - FN
+  File: ggg083.jpg
+  True: smoking | Pred: not_smoking (95.6%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=95.6% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[14] NGHIEM_TRONG - FN
+  File: gg0394.jpg
+  True: smoking | Pred: not_smoking (92.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=92.9% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[15] NGHIEM_TRONG - FN
+  File: bb0337.jpg
+  True: smoking | Pred: not_smoking (91.8%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=91.8% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[16] NGHIEM_TRONG - FN
+  File: bb0039.jpg
+  True: smoking | Pred: not_smoking (91.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=91.3% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[17] NGHIEM_TRONG - FP
+  File: ggg044.jpg
+  True: not_smoking | Pred: smoking (89.8%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=35 - quá tối
+    - [conf_cao_sai] Conf=89.8% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[18] NGHIEM_TRONG - FN
+  File: a00135-0.jpg
+  True: smoking | Pred: not_smoking (89.6%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=45 - quá tối
+    - [conf_cao_sai] Conf=89.6% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[19] NGHIEM_TRONG - FN
+  File: ggg596.jpg
+  True: smoking | Pred: not_smoking (89.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=89.4% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[20] NGHIEM_TRONG - FP
+  File: ggg587.jpg
+  True: not_smoking | Pred: smoking (88.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=88.2% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[21] NGHIEM_TRONG - FP
+  File: gg0008.jpg
+  True: not_smoking | Pred: smoking (85.5%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=44 - quá tối
+    - [conf_cao_sai] Conf=85.5% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[22] NGHIEM_TRONG - FP
+  File: ggg469.jpg
+  True: not_smoking | Pred: smoking (84.8%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=84.8% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[23] NGHIEM_TRONG - FP
+  File: ggg267.jpg
+  True: not_smoking | Pred: smoking (84.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=84.7% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[24] NGHIEM_TRONG - FP
+  File: ggg522.jpg
+  True: not_smoking | Pred: smoking (84.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=84.4% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[25] NGHIEM_TRONG - FP
+  File: aug_131_bb0357.jpg
+  True: not_smoking | Pred: smoking (83.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=83.9% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[26] NGHIEM_TRONG - FP
+  File: ggg328.jpg
+  True: not_smoking | Pred: smoking (83.6%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=83.6% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[27] NGHIEM_TRONG - FN
+  File: c00166.jpg
+  True: smoking | Pred: not_smoking (83.4%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=27 - quá tối
+    - [conf_cao_sai] Conf=83.4% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[28] NGHIEM_TRONG - FN
+  File: 000256.jpg
+  True: smoking | Pred: not_smoking (82.5%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=82.5% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[29] NGHIEM_TRONG - FP
+  File: ggg208.jpg
+  True: not_smoking | Pred: smoking (82.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=82.4% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[30] NGHIEM_TRONG - FP
+  File: bb0638.jpg
+  True: not_smoking | Pred: smoking (80.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=80.4% - rất tự tin nhưng SAI
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[31] NGHIEM_TRONG - FN
+  File: gg0235.jpg
+  True: smoking | Pred: not_smoking (80.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=80.3% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[32] NGHIEM_TRONG - FN
+  File: bb0309.jpg
+  True: smoking | Pred: not_smoking (80.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence cao nhưng sai - lỗi nghiêm trọng
+  Tất cả nguyên nhân:
+    - [conf_cao_sai] Conf=80.2% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[33] NGHIEM_TRONG - FN
+  File: gg0272.jpg
+  True: smoking | Pred: not_smoking (80.1%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=49 - quá tối
+    - [conf_cao_sai] Conf=80.1% - rất tự tin nhưng SAI
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[34] TRUNG_BINH - FP
+  File: gg0170.jpg
+  True: not_smoking | Pred: smoking (79.6%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=79.6% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[35] TRUNG_BINH - FP
+  File: ggg306.jpg
+  True: not_smoking | Pred: smoking (79.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=79.3% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[36] TRUNG_BINH - FP
+  File: gg0706.jpg
+  True: not_smoking | Pred: smoking (79.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=79.2% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[37] TRUNG_BINH - FN
+  File: ggg144.jpg
+  True: smoking | Pred: not_smoking (78.1%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=78.1% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[38] TRUNG_BINH - FN
+  File: c00443.jpg
+  True: smoking | Pred: not_smoking (77.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=77.2% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[39] TRUNG_BINH - FP
+  File: gg0302.jpg
+  True: not_smoking | Pred: smoking (77.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=77.2% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[40] TRUNG_BINH - FN
+  File: bb0045.jpg
+  True: smoking | Pred: not_smoking (76.6%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=76.6% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[41] TRUNG_BINH - FP
+  File: gg0301.jpg
+  True: not_smoking | Pred: smoking (76.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=76.3% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[42] TRUNG_BINH - FP
+  File: ggg179.jpg
+  True: not_smoking | Pred: smoking (75.8%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=75.8% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[43] TRUNG_BINH - FN
+  File: gg0416.jpg
+  True: smoking | Pred: not_smoking (74.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=74.3% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[44] TRUNG_BINH - FP
+  File: gg0294.jpg
+  True: not_smoking | Pred: smoking (74.0%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=74.0% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[45] TRUNG_BINH - FP
+  File: ggg129.jpg
+  True: not_smoking | Pred: smoking (73.9%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=14 - quá tối
+    - [conf_tb_sai] Conf=73.9% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[46] TRUNG_BINH - FN
+  File: 000379.jpg
+  True: smoking | Pred: not_smoking (73.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=73.7% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[47] TRUNG_BINH - FP
+  File: bb0654.jpg
+  True: not_smoking | Pred: smoking (73.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=73.4% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[48] TRUNG_BINH - FP
+  File: gg0168.jpg
+  True: not_smoking | Pred: smoking (72.6%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=72.6% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[49] TRUNG_BINH - FN
+  File: a00629-0.jpg
+  True: smoking | Pred: not_smoking (71.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=71.9% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[50] TRUNG_BINH - FP
+  File: gg0152.jpg
+  True: not_smoking | Pred: smoking (71.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=71.7% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[51] TRUNG_BINH - FN
+  File: 000150.jpg
+  True: smoking | Pred: not_smoking (70.5%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=70.5% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[52] TRUNG_BINH - FN
+  File: bb0470.jpg
+  True: smoking | Pred: not_smoking (70.1%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=70.1% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[53] TRUNG_BINH - FN
+  File: gg0280.jpg
+  True: smoking | Pred: not_smoking (69.5%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=50 - quá tối
+    - [conf_tb_sai] Conf=69.5% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[54] TRUNG_BINH - FN
+  File: c00029.jpg
+  True: smoking | Pred: not_smoking (69.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=69.4% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[55] TRUNG_BINH - FP
+  File: gg0074.jpg
+  True: not_smoking | Pred: smoking (68.1%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=38 - quá tối
+    - [conf_tb_sai] Conf=68.1% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[56] TRUNG_BINH - FN
+  File: bb0511.jpg
+  True: smoking | Pred: not_smoking (67.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=67.4% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[57] TRUNG_BINH - FN
+  File: bb0115.jpg
+  True: smoking | Pred: not_smoking (67.0%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=67.0% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[58] TRUNG_BINH - FP
+  File: ggg164.jpg
+  True: not_smoking | Pred: smoking (66.2%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=66.2% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[59] TRUNG_BINH - FP
+  File: gg0080.jpg
+  True: not_smoking | Pred: smoking (65.6%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=30 - quá tối
+    - [conf_tb_sai] Conf=65.6% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[60] TRUNG_BINH - FP
+  File: gg0064.jpg
+  True: not_smoking | Pred: smoking (65.4%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=41 - quá tối
+    - [conf_tb_sai] Conf=65.4% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[61] TRUNG_BINH - FN
+  File: 000180.jpg
+  True: smoking | Pred: not_smoking (65.1%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=65.1% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[62] TRUNG_BINH - FN
+  File: ggg368.jpg
+  True: smoking | Pred: not_smoking (64.6%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=43 - quá tối
+    - [conf_tb_sai] Conf=64.6% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[63] TRUNG_BINH - FN
+  File: ggg113.jpg
+  True: smoking | Pred: not_smoking (64.2%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=45 - quá tối
+    - [conf_tb_sai] Conf=64.2% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[64] TRUNG_BINH - FN
+  File: bb0586.jpg
+  True: smoking | Pred: not_smoking (63.9%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=63.9% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[65] TRUNG_BINH - FN
+  File: bb0526.jpg
+  True: smoking | Pred: not_smoking (63.4%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=63.4% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[66] TRUNG_BINH - FP
+  File: gg0644.jpg
+  True: not_smoking | Pred: smoking (63.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=63.3% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[67] TRUNG_BINH - FP
+  File: gg0313.jpg
+  True: not_smoking | Pred: smoking (60.7%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=60.7% - khá tự tin nhưng sai
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[68] TRUNG_BINH - FN
+  File: gg0068.jpg
+  True: smoking | Pred: not_smoking (60.3%)
+  Size: 224x224
+  Nguyên nhân chính: Confidence trung bình sai
+  Tất cả nguyên nhân:
+    - [conf_tb_sai] Conf=60.3% - khá tự tin nhưng sai
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[69] NHE - FN
+  File: gg0015.jpg
+  True: smoking | Pred: not_smoking (58.5%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=47 - quá tối
+    - [truong_hop_bien] Margin=16.9% - sát ngưỡng
+    - [conf_thap_sai] Conf=58.5% - không chắc chắn
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[70] NHE - FP
+  File: gg0679.jpg
+  True: not_smoking | Pred: smoking (57.2%)
+  Size: 224x224
+  Nguyên nhân chính: Trường hợp biên - confidence sát ngưỡng
+  Tất cả nguyên nhân:
+    - [truong_hop_bien] Margin=14.5% - sát ngưỡng
+    - [conf_thap_sai] Conf=57.2% - không chắc chắn
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[71] NHE - FP
+  File: ggg253.jpg
+  True: not_smoking | Pred: smoking (56.0%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=34 - quá tối
+    - [truong_hop_bien] Margin=12.0% - sát ngưỡng
+    - [conf_thap_sai] Conf=56.0% - không chắc chắn
+    - [giong_hanh_dong_hut] Có thể giống hành động hút thuốc
+
+[72] NHE - FN
+  File: gg0045.jpg
+  True: smoking | Pred: not_smoking (55.7%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=48 - quá tối
+    - [truong_hop_bien] Margin=11.3% - sát ngưỡng
+    - [conf_thap_sai] Conf=55.7% - không chắc chắn
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[73] NHE - FN
+  File: bb0465.jpg
+  True: smoking | Pred: not_smoking (55.6%)
+  Size: 224x224
+  Nguyên nhân chính: Trường hợp biên - confidence sát ngưỡng
+  Tất cả nguyên nhân:
+    - [truong_hop_bien] Margin=11.2% - sát ngưỡng
+    - [conf_thap_sai] Conf=55.6% - không chắc chắn
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[74] NHE - FN
+  File: gg0037.jpg
+  True: smoking | Pred: not_smoking (54.3%)
+  Size: 224x224
+  Nguyên nhân chính: Trường hợp biên - confidence sát ngưỡng
+  Tất cả nguyên nhân:
+    - [truong_hop_bien] Margin=8.6% - sát ngưỡng
+    - [conf_thap_sai] Conf=54.3% - không chắc chắn
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
+[75] NHE - FN
+  File: 000143.jpg
+  True: smoking | Pred: not_smoking (53.4%)
+  Size: 224x224
+  Nguyên nhân chính: Ảnh quá tối - khó nhận diện
+  Tất cả nguyên nhân:
+    - [anh_qua_toi] Độ sáng TB=31 - quá tối
+    - [truong_hop_bien] Margin=6.8% - sát ngưỡng
+    - [conf_thap_sai] Conf=53.4% - không chắc chắn
+    - [thuoc_la_bi_che] Thuốc lá có thể bị che khuất
+    - [khoi_khong_ro] Khói thuốc có thể không rõ
+
